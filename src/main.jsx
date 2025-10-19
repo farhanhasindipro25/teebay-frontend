@@ -1,10 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import { ApolloProvider } from "./providers/ApolloProvider.jsx";
+import { RouterProvider } from "./providers/RouterProvider.jsx";
+import ThemeProvider from "./providers/ThemeProvider.jsx";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+createRoot(document.getElementById("root")).render(
+    <StrictMode>
+        <ThemeProvider>
+            <ApolloProvider>
+                <RouterProvider />
+            </ApolloProvider>
+        </ThemeProvider>
+    </StrictMode>
+);
