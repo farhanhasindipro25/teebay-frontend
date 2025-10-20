@@ -1,10 +1,11 @@
 import { Navigate } from "react-router-dom";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 export default function PublicRoute({ children }) {
-    const userId = localStorage.getItem("userId");
+    const currentUser = useCurrentUser();
 
-    if (userId) {
-        return <Navigate to="/" replace />;
+    if (currentUser) {
+        return <Navigate to="/dashboard" replace />;
     }
 
     return children;

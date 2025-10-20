@@ -35,3 +35,15 @@ export const LOGIN = gql`
         }
     }
 `;
+
+export const GET_CURRENT_USER = gql`
+    query GetCurrentUser {
+        currentUser @client {
+            uid
+            name
+            email
+            phone
+            address
+        }
+    }
+`;
