@@ -73,7 +73,7 @@ export default function AppShellLayout({ children }) {
 
             <AppShell.Navbar p="md">
                 <Text size="sm" fw={500} c="dimmed" mb="md">
-                    Navigation
+                    User Menu
                 </Text>
                 {navItems.map((item) => (
                     <NavLink

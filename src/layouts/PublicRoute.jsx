@@ -1,12 +1,13 @@
 import { Navigate } from "react-router-dom";
 import { useCurrentUser } from "../hooks/useCurrentUser";
+import Navbar from "./Navbar";
 
 export default function PublicRoute({ children }) {
     const currentUser = useCurrentUser();
 
     if (currentUser) {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to="/my-products" replace />;
     }
 
-    return children;
+    return <Navbar>{children}</Navbar>;
 }

@@ -1,27 +1,34 @@
 import { lazy } from "react";
+import * as urls from "./appUrls";
 
-const Login = lazy(() => import("../pages/auth/Login"));
-const CreateAccount = lazy(() => import("../pages/auth/CreateAccount"));
-// const MyProducts = lazy(() => import("../pages/MyProducts"));
+const Login = lazy(() => import("../app/Auth/Login/Login"));
+const CreateAccount = lazy(() =>
+    import("../app/Auth/CreateAccount/CreateAccount")
+);
+const Products = lazy(() => import("../app/Products/Products"));
+const UserProducts = lazy(() => import("../app/UserProducts/UserProducts"));
 
-export const publicRoutes = [
+const appRoutes = [
     {
-        path: "/login",
+        path: urls.PRODUCTS,
+        Element: Products,
+        isPrivate: false,
+    },
+    {
+        path: urls.LOGIN,
         Element: Login,
+        isPrivate: false,
     },
     {
-        path: "/create-account",
+        path: urls.CREATE_ACCOUNT,
         Element: CreateAccount,
+        isPrivate: false,
     },
-];
-export const privateRoutes = [
     {
-        path: "/my-products",
-        Element: <div>fds</div>,
-        noShell: false,
+        path: urls.MY_PRODUCTS,
+        Element: UserProducts,
+        isPrivate: true,
     },
 ];
-
-const appRoutes = [...publicRoutes, ...privateRoutes];
 
 export default appRoutes;
