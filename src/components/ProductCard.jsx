@@ -69,7 +69,12 @@ export default function ProductCard({ product }) {
             </Flex>
 
             <Text size="sm" c="dimmed" mb="xs">
-                Categories: {product.categories?.join(", ") || "Uncategorized"}
+                Categories:{" "}
+                {product.categories?.length
+                    ? product.categories
+                          .map((c) => c.replace("_", " "))
+                          .join(", ")
+                    : "Uncategorized"}
             </Text>
 
             <Text size="sm" c="dark" mb="md">
