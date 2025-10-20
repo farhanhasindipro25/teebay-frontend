@@ -20,6 +20,15 @@ export default function ProductCard({ product }) {
         navigate(`/products/${product.uid}`);
     };
 
+    const handleEdit = (e) => {
+        e.stopPropagation();
+        navigate(`/my-products/edit/${product.uid}`);
+    };
+
+    const handleDelete = (e) => {
+        e.stopPropagation();
+    };
+
     return (
         <Card
             shadow="sm"
@@ -36,14 +45,22 @@ export default function ProductCard({ product }) {
                 </Title>
 
                 {currentUser && (
-                    <Group gap="xs">
+                    <Group gap="xs" onClick={(e) => e.stopPropagation()}>
                         <Tooltip label="Edit Product">
-                            <ActionIcon variant="subtle" color="indigo">
+                            <ActionIcon
+                                variant="subtle"
+                                color="indigo"
+                                onClick={handleEdit}
+                            >
                                 <IconEdit size={18} />
                             </ActionIcon>
                         </Tooltip>
                         <Tooltip label="Delete Product">
-                            <ActionIcon variant="subtle" color="red">
+                            <ActionIcon
+                                variant="subtle"
+                                color="red"
+                                onClick={handleDelete}
+                            >
                                 <IconTrash size={18} />
                             </ActionIcon>
                         </Tooltip>
