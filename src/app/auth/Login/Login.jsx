@@ -75,14 +75,14 @@ export default function Login() {
                     <Text size="sm">
                         Don’t have an account?{" "}
                         <Link
-                            to="/create-user"
+                            to="/create-account"
                             style={{
                                 color: "rgb(99, 102, 241)",
                                 textDecoration: "none",
                                 fontWeight: 500,
                             }}
                         >
-                            Signup
+                            Let's Create One
                         </Link>
                     </Text>
                 </Group>
