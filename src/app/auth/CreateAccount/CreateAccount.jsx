@@ -15,7 +15,7 @@ import { useMutation } from "@apollo/client/react";
 import { notifications } from "@mantine/notifications";
 
 import { createAccountSchema } from "../../../validators/authValidators";
-import { CREATE_USER } from "../../../mutations/authMutations";
+import { CREATE_USER } from "../../../services/mutations/authMutations";
 
 export default function CreateAccount() {
     const navigate = useNavigate();

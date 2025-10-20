@@ -13,7 +13,7 @@ import { yupResolver } from "mantine-form-yup-resolver";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client/react";
 import { notifications } from "@mantine/notifications";
-import { LOGIN } from "../../../mutations/authMutations";
+import { LOGIN } from "../../../services/mutations/authMutations";
 import { loginSchema } from "../../../validators/authValidators";
 import { currentUserVar } from "../../../providers/ApolloProvider";
 
