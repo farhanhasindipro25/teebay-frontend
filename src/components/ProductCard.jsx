@@ -1,14 +1,25 @@
-import { Card, Title, Text, Group } from "@mantine/core";
-import { IconCalendar } from "@tabler/icons-react";
+import {
+    Card,
+    Title,
+    Text,
+    Group,
+    ActionIcon,
+    Flex,
+    Tooltip,
+} from "@mantine/core";
+import { IconCalendar, IconEdit, IconTrash } from "@tabler/icons-react";
 import { GetDateInDayMonthYearFormat } from "../utils/dateFormatters";
 import { useNavigate } from "react-router-dom";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 export default function ProductCard({ product }) {
     const navigate = useNavigate();
+    const currentUser = useCurrentUser();
 
     const handleClick = () => {
         navigate(`/products/${product.uid}`);
     };
+
     return (
         <Card
             shadow="sm"
@@ -19,9 +30,26 @@ export default function ProductCard({ product }) {
             }}
             onClick={handleClick}
         >
-            <Title order={2} size="h4" mb="xs">
-                {product.title}
-            </Title>
+            <Flex justify="space-between" align="flex-start" mb="xs">
+                <Title order={2} size="h4" style={{ flex: 1 }}>
+                    {product.title}
+                </Title>
+
+                {currentUser && (
+                    <Group gap="xs">
+                        <Tooltip label="Edit Product">
+                            <ActionIcon variant="subtle" color="indigo">
+                                <IconEdit size={18} />
+                            </ActionIcon>
+                        </Tooltip>
+                        <Tooltip label="Delete Product">
+                            <ActionIcon variant="subtle" color="red">
+                                <IconTrash size={18} />
+                            </ActionIcon>
+                        </Tooltip>
+                    </Group>
+                )}
+            </Flex>
 
             <Text size="sm" c="dimmed" mb="xs">
                 Categories: {product.categories?.join(", ") || "Uncategorized"}

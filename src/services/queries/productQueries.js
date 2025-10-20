@@ -63,3 +63,34 @@ export const GET_PRODUCT = gql`
         }
     }
 `;
+
+export const GET_PRODUCTS_BY_USER = gql`
+    query GetProductsOfUser($userUid: String!) {
+        productsByUser(userUid: $userUid) {
+            success
+            message
+            data {
+                uid
+                title
+                description
+                price
+                rentalPrice
+                rentalType
+                rentStartsAt
+                rentEndsAt
+                categories
+                isBought
+                isRented
+                createdById
+                createdByInfo {
+                    uid
+                    name
+                    email
+                }
+                isActive
+                createdAt
+                updatedAt
+            }
+        }
+    }
+`;
