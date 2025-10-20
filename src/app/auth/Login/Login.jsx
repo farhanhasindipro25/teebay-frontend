@@ -12,7 +12,7 @@ import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { loginSchema } from "./validator/loginSchema";
+import { loginSchema } from "../../../validators/authValidators";
 
 export default function Login() {
     const [loading, setLoading] = useState(false);

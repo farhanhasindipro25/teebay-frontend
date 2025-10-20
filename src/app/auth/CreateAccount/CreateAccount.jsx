@@ -11,15 +11,44 @@ import {
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
 import { Link, useNavigate } from "react-router-dom";
-import { createAccountSchema } from "./validator/createAccountSchema";
+import { useMutation } from "@apollo/client/react";
+import { notifications } from "@mantine/notifications";
+
+import { createAccountSchema } from "../../../validators/authValidators";
+import { CREATE_USER } from "../../../mutations/authMutations";
 
 export default function CreateAccount() {
     const navigate = useNavigate();
 
+    const [createUser, { loading }] = useMutation(CREATE_USER, {
+        onCompleted: (data) => {
+            if (data.createUser.success) {
+                const user = data.createUser.data;
+
+                notifications.show({
+                    title: "Success",
+                    message:
+                        data.createUser.message ||
+                        "Your account has been created successfully! Please login to continue.",
+                    color: "green",
+                });
+                navigate("/login");
+            }
+        },
+        onError: (error) => {
+            notifications.show({
+                title: "Error",
+                message:
+                    error.message ||
+                    "An error occurred while creating your account.",
+                color: "red",
+            });
+        },
+    });
+
     const form = useForm({
         initialValues: {
-            firstName: "",
-            lastName: "",
+            name: "",
             address: "",
             email: "",
             phone: "",
@@ -29,6 +58,27 @@ export default function CreateAccount() {
         validate: yupResolver(createAccountSchema),
     });
 
+    const handleSubmit = async (values) => {
+        try {
+            await createUser({
+                variables: {
+                    createUserInput: {
+                        name: values.name,
+                        email: values.email,
+                        password: values.password,
+                        phone: values.phone,
+                        address: values.address,
+                    },
+                },
+            });
+        } catch (error) {
+            console.error(
+                "An error occurred while creating your account:",
+                error
+            );
+        }
+    };
+
     return (
         <Box maw={800} mx="auto" mt={80}>
             <Card shadow="sm" p="xl" radius="md" withBorder>
@@ -36,21 +86,12 @@ export default function CreateAccount() {
                     CREATE ACCOUNT
                 </Title>
 
-                <form>
-                    <Flex gap="md" direction={{ base: "column", sm: "row" }}>
-                        <TextInput
-                            label="First Name"
-                            placeholder="e.g. Farhan"
-                            flex={1}
-                            {...form.getInputProps("firstName")}
-                        />
-                        <TextInput
-                            label="Last Name"
-                            placeholder="e.g. Hasin"
-                            flex={1}
-                            {...form.getInputProps("lastName")}
-                        />
-                    </Flex>
+                <form onSubmit={form.onSubmit(handleSubmit)}>
+                    <TextInput
+                        label="Name"
+                        placeholder="e.g. Farhan Hasin"
+                        {...form.getInputProps("name")}
+                    />
 
                     <TextInput
                         mt="md"
@@ -91,7 +132,13 @@ export default function CreateAccount() {
                         {...form.getInputProps("confirmPassword")}
                     />
 
-                    <Button fullWidth mt="xl" type="submit" color="indigo">
+                    <Button
+                        fullWidth
+                        mt="xl"
+                        type="submit"
+                        color="indigo"
+                        loading={loading}
+                    >
                         CREATE ACCOUNT
                     </Button>
                 </form>
