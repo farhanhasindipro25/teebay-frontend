@@ -3,8 +3,11 @@ import {
     InMemoryCache,
     HttpLink,
     ApolloLink,
+    makeVar,
 } from "@apollo/client";
 import { ApolloProvider as BaseApolloProvider } from "@apollo/client/react";
+
+export const currentUserVar = makeVar(null);
 
 const httpLink = new HttpLink({
     uri: import.meta.env.VITE_GRAPHQL_URL,
@@ -12,12 +15,14 @@ const httpLink = new HttpLink({
 
 const authMiddleware = new ApolloLink((operation, forward) => {
     const userId = localStorage.getItem("userId");
+    const userUid = localStorage.getItem("userUid");
     const userEmail = localStorage.getItem("userEmail");
 
     operation.setContext(({ headers = {} }) => ({
         headers: {
             ...headers,
             "x-user-id": userId || "",
+            "x-user-uid": userUid || "",
             "x-user-email": userEmail || "",
         },
     }));
@@ -29,7 +34,15 @@ const client = new ApolloClient({
     link: ApolloLink.from([authMiddleware, httpLink]),
     cache: new InMemoryCache({
         typePolicies: {
-            Query: {},
+            Query: {
+                fields: {
+                    currentUser: {
+                        read() {
+                            return currentUserVar();
+                        },
+                    },
+                },
+            },
         },
     }),
     defaultOptions: {

@@ -19,3 +19,19 @@ export const CREATE_USER = gql`
         }
     }
 `;
+
+export const LOGIN = gql`
+    mutation Login($loginInput: LoginInput!) {
+        login(loginInput: $loginInput) {
+            success
+            message
+            user {
+                uid
+                name
+                email
+                phone
+                address
+            }
+        }
+    }
+`;

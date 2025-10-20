@@ -10,12 +10,54 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client/react";
+import { notifications } from "@mantine/notifications";
+import { LOGIN } from "../../../mutations/authMutations";
 import { loginSchema } from "../../../validators/authValidators";
+import { currentUserVar } from "../../../providers/ApolloProvider";
 
 export default function Login() {
-    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const [login, { loading }] = useMutation(LOGIN, {
+        onCompleted: (data) => {
+            if (data.login.success) {
+                const user = data.login.user;
+
+                currentUserVar({
+                    uid: user.uid,
+                    name: user.name,
+                    email: user.email,
+                    phone: user.phone,
+                    address: user.address,
+                });
+
+                localStorage.setItem("userId", user.id);
+                localStorage.setItem("userUid", user.uid);
+                localStorage.setItem("userEmail", user.email);
+
+                notifications.show({
+                    title: "Success",
+                    message: data.login.message || "Login successful!",
+                    color: "green",
+                });
+            } else {
+                notifications.show({
+                    title: "Login Failed",
+                    message: data.login.message || "Invalid credentials",
+                    color: "red",
+                });
+            }
+        },
+        onError: (error) => {
+            notifications.show({
+                title: "Error",
+                message: error.message || "An error occurred during login.",
+                color: "red",
+            });
+        },
+    });
 
     const form = useForm({
         initialValues: {
@@ -24,6 +66,21 @@ export default function Login() {
         },
         validate: yupResolver(loginSchema),
     });
+
+    const handleSubmit = async (values) => {
+        try {
+            await login({
+                variables: {
+                    loginInput: {
+                        email: values.email,
+                        password: values.password,
+                    },
+                },
+            });
+        } catch (error) {
+            console.error("Login error:", error);
+        }
+    };
 
     return (
         <div
@@ -46,7 +103,7 @@ export default function Login() {
                     LOGIN
                 </Title>
 
-                <form>
+                <form onSubmit={form.onSubmit(handleSubmit)}>
                     <Stack>
                         <TextInput
                             label="Email"
@@ -73,7 +130,7 @@ export default function Login() {
 
                 <Group justify="center" mt="md">
                     <Text size="sm">
-                        Don’t have an account?{" "}
+                        Don't have an account?{" "}
                         <Link
                             to="/create-account"
                             style={{
