@@ -1,8 +1,14 @@
 import { Card, Title, Text, Group } from "@mantine/core";
 import { IconCalendar } from "@tabler/icons-react";
 import { GetDateInDayMonthYearFormat } from "../utils/dateFormatters";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/products/${product.uid}`);
+    };
     return (
         <Card
             shadow="sm"
@@ -11,8 +17,9 @@ export default function ProductCard({ product }) {
             style={{
                 cursor: "pointer",
             }}
+            onClick={handleClick}
         >
-            <Title order={2} size="h3" mb="xs">
+            <Title order={2} size="h4" mb="xs">
                 {product.title}
             </Title>
 

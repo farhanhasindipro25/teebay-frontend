@@ -6,12 +6,18 @@ const CreateAccount = lazy(() =>
     import("../app/Auth/CreateAccount/CreateAccount")
 );
 const Products = lazy(() => import("../app/Products/Products"));
+const ProductDetails = lazy(() => import("../app/ProductDetails/ProductDetails"));
 const UserProducts = lazy(() => import("../app/UserProducts/UserProducts"));
 
 const appRoutes = [
     {
         path: urls.PRODUCTS,
         Element: Products,
+        isPrivate: false,
+    },
+    {
+        path: urls.PRODUCT_DETAILS,
+        Element: ProductDetails,
         isPrivate: false,
     },
     {
