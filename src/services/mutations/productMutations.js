@@ -25,3 +25,12 @@ export const UPDATE_PRODUCT = gql`
         }
     }
 `;
+
+export const DELETE_PRODUCT = gql`
+    mutation DeleteProduct($productUid: String!, $userUid: String!) {
+        deleteProduct(productUid: $productUid, userUid: $userUid) {
+            success
+            message
+        }
+    }
+`;

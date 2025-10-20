@@ -18,7 +18,7 @@ export default function UserProducts() {
     const currentUser = useCurrentUser();
     const userUid = currentUser?.uid;
 
-    const { loading, error, data } = useQuery(GET_PRODUCTS_BY_USER, {
+    const { loading, error, data, refetch } = useQuery(GET_PRODUCTS_BY_USER, {
         variables: { userUid: userUid || "" },
         skip: !userUid,
     });
@@ -80,7 +80,11 @@ export default function UserProducts() {
 
             <Stack gap="md">
                 {products.map((product) => (
-                    <ProductCard key={product.uid} product={product} />
+                    <ProductCard
+                        refetch={refetch}
+                        key={product.uid}
+                        product={product}
+                    />
                 ))}
             </Stack>
 
