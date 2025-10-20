@@ -90,12 +90,9 @@ export default function UserProducts() {
 
             {products.length === 0 && (
                 <Stack align="center" py="xl" gap="md">
-                    <Text size="lg" c="dimmed">
+                    <Text size="md" c="dimmed">
                         You haven't added any products yet
                     </Text>
-                    <Button leftSection={<IconPlus size={20} />}>
-                        Add Your First Product
-                    </Button>
                 </Stack>
             )}
         </Container>

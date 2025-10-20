@@ -137,6 +137,12 @@ export default function ProductCard({ product, refetch }) {
                         {GetDateInDayMonthYearFormat(product.createdAt)}
                     </Text>
                 </Group>
+                <Group gap="xs">
+                    <IconCalendar size={14} />
+                    <Text size="sm" c="dimmed">
+                        Posted By: {product.createdByInfo?.name}
+                    </Text>
+                </Group>
             </Group>
         </Card>
     );
