@@ -50,6 +50,17 @@ export default function UserProductCard({ product, refetch }) {
                 color: "red",
             });
         },
+        update(cache, { data }) {
+            if (data?.deleteProduct?.success) {
+                cache.evict({
+                    id: cache.identify({
+                        __typename: "Product",
+                        uid: product.uid,
+                    }),
+                });
+                cache.gc();
+            }
+        },
     });
 
     const handleEdit = (e) => {
@@ -94,6 +105,7 @@ export default function UserProductCard({ product, refetch }) {
                             variant="subtle"
                             color="indigo"
                             onClick={handleEdit}
+                            disabled={product.isBought || product.isRented}
                         >
                             <IconEdit size={18} />
                         </ActionIcon>
@@ -103,7 +115,9 @@ export default function UserProductCard({ product, refetch }) {
                             variant="subtle"
                             color="red"
                             onClick={handleDelete}
-                            disabled={loading}
+                            disabled={
+                                loading || product.isBought || product.isRented
+                            }
                         >
                             <IconTrash size={18} />
                         </ActionIcon>
