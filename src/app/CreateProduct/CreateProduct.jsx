@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client/react";
 import {
     Button,
     Container,
@@ -14,12 +15,18 @@ import {
     Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 import { yupResolver } from "mantine-form-yup-resolver";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { CREATE_PRODUCT } from "../../services/mutations/productMutations";
 import { productSchema } from "../../validators/productValidator";
 
 export default function CreateProduct() {
     const [active, setActive] = useState(0);
+    const navigate = useNavigate();
+    const currentUser = useCurrentUser();
 
     const categoryOptions = [
         { value: "ELECTRONICS", label: "Electronics" },
@@ -49,13 +56,51 @@ export default function CreateProduct() {
         validate: yupResolver(productSchema),
     });
 
+    const [createProduct, { loading }] = useMutation(CREATE_PRODUCT, {
+        onCompleted: (data) => {
+            notifications.show({
+                title: "Success!",
+                message: `Product created successfully`,
+                color: "green",
+                autoClose: 5000,
+            });
+
+            form.reset();
+            navigate("/my-products");
+        },
+        onError: (error) => {
+            notifications.show({
+                title: "Error",
+                message: error.message || "Failed to create product",
+                color: "red",
+                autoClose: 5000,
+            });
+        },
+    });
+
     const nextStep = () => setActive((current) => Math.min(current + 1, 5));
     const prevStep = () => setActive((current) => Math.max(current - 1, 0));
     const handleChange = (field, value) =>
         form.setValues({ ...form.values, [field]: value });
 
-    const handleSubmit = (values) => {
-        console.log("✅ Final submit:", values);
+    const handleSubmit = async (values) => {
+        try {
+            await createProduct({
+                variables: {
+                    createProductInput: {
+                        title: values.title,
+                        description: values.description,
+                        price: Number(values.price),
+                        rentalPrice: Number(values.rentalPrice),
+                        rentalType: values.rentalType,
+                        categories: values.categories,
+                        userUid: currentUser.uid,
+                    },
+                },
+            });
+        } catch (error) {
+            console.error("Error creating product:", error);
+        }
     };
 
     return (
@@ -277,7 +322,11 @@ export default function CreateProduct() {
                                 <Button variant="default" onClick={prevStep}>
                                     Back
                                 </Button>
-                                <Button color="indigo" type="submit">
+                                <Button
+                                    color="indigo"
+                                    type="submit"
+                                    loading={loading}
+                                >
                                     Submit
                                 </Button>
                             </Group>
