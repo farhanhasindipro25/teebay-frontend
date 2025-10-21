@@ -5,7 +5,6 @@ import {
     Container,
     Flex,
     Group,
-    Loader,
     Stack,
     Text,
     Title,
@@ -16,10 +15,12 @@ import {
     IconChevronLeft,
 } from "@tabler/icons-react";
 import { useNavigate, useParams } from "react-router-dom";
+import ErrorBox from "../../components/ErrorBox";
+import GlobalInitialPageLoader from "../../components/GlobalInitialPageLoader";
+import { PRODUCTS } from "../../constants/appUrls";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { GET_PRODUCT } from "../../services/queries/productQueries";
 import { GetDateInDayMonthYearFormat } from "../../utils/dateFormatters";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { PRODUCTS } from "../../constants/appUrls";
 
 export default function ProductDetails() {
     const { uid } = useParams();
@@ -29,33 +30,9 @@ export default function ProductDetails() {
         variables: { uid },
     });
 
-    if (loading) {
-        return (
-            <Container size="xl" py="xl">
-                <Flex
-                    justify="center"
-                    align="center"
-                    style={{ minHeight: "60vh" }}
-                >
-                    <Loader size="lg" />
-                </Flex>
-            </Container>
-        );
-    }
+    if (loading) return <GlobalInitialPageLoader />;
 
-    if (error) {
-        return (
-            <Container size="xl" py="xl">
-                <Alert
-                    icon={<IconAlertCircle size={16} />}
-                    title="Error"
-                    color="red"
-                >
-                    Failed to load product: {error.message}
-                </Alert>
-            </Container>
-        );
-    }
+    if (error) return <ErrorBox message={error.message} />;
 
     const product = data?.product?.data;
 

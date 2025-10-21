@@ -1,47 +1,16 @@
 import { useQuery } from "@apollo/client/react";
-import {
-    Alert,
-    Container,
-    Flex,
-    Loader,
-    Stack,
-    Text,
-    Title,
-} from "@mantine/core";
-import { IconAlertCircle } from "@tabler/icons-react";
+import { Container, Flex, Stack, Text, Title } from "@mantine/core";
+import ErrorBox from "../../components/ErrorBox";
+import GlobalInitialPageLoader from "../../components/GlobalInitialPageLoader";
 import { GET_PRODUCTS } from "../../services/queries/productQueries";
 import ProductCard from "./components/ProductCard";
 
 export default function Products() {
     const { loading, error, data } = useQuery(GET_PRODUCTS);
 
-    if (loading) {
-        return (
-            <Container size="xl" py="xl">
-                <Flex
-                    justify="center"
-                    align="center"
-                    style={{ minHeight: "60vh" }}
-                >
-                    <Loader size="lg" />
-                </Flex>
-            </Container>
-        );
-    }
+    if (loading) return <GlobalInitialPageLoader />;
 
-    if (error) {
-        return (
-            <Container size="xl" py="xl">
-                <Alert
-                    icon={<IconAlertCircle size={16} />}
-                    title="Error"
-                    color="red"
-                >
-                    Failed to load products: {error.message}
-                </Alert>
-            </Container>
-        );
-    }
+    if (error) return <ErrorBox message={error.message} />;
 
     const products = Array.isArray(data?.products?.data)
         ? data.products.data

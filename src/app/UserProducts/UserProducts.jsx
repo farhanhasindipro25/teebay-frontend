@@ -1,16 +1,10 @@
 import { useQuery } from "@apollo/client/react";
-import {
-    Alert,
-    Button,
-    Container,
-    Flex,
-    Loader,
-    Stack,
-    Text,
-    Title,
-} from "@mantine/core";
-import { IconAlertCircle, IconPlus } from "@tabler/icons-react";
+import { Button, Container, Flex, Stack, Text, Title } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
+import AuthExpireAlert from "../../components/AuthExpireAlert";
+import ErrorBox from "../../components/ErrorBox";
+import GlobalInitialPageLoader from "../../components/GlobalInitialPageLoader";
 import { CREATE_PRODUCT } from "../../constants/appUrls";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { GET_PRODUCTS_BY_USER } from "../../services/queries/productQueries";
@@ -26,47 +20,11 @@ export default function UserProducts() {
         skip: !userUid,
     });
 
-    if (!userUid) {
-        return (
-            <Container size="xl" py="xl">
-                <Alert
-                    icon={<IconAlertCircle size={16} />}
-                    title="Authentication Required"
-                    color="yellow"
-                >
-                    Please log in to view your products
-                </Alert>
-            </Container>
-        );
-    }
+    if (!userUid) return <AuthExpireAlert />;
 
-    if (loading) {
-        return (
-            <Container size="xl" py="xl">
-                <Flex
-                    justify="center"
-                    align="center"
-                    style={{ minHeight: "60vh" }}
-                >
-                    <Loader size="lg" />
-                </Flex>
-            </Container>
-        );
-    }
+    if (loading) return <GlobalInitialPageLoader />;
 
-    if (error) {
-        return (
-            <Container size="xl" py="xl">
-                <Alert
-                    icon={<IconAlertCircle size={16} />}
-                    title="Error"
-                    color="red"
-                >
-                    Failed to load your products: {error.message}
-                </Alert>
-            </Container>
-        );
-    }
+    if (error) return <ErrorBox message={error.message} />;
 
     const products = Array.isArray(data?.productsByUser?.data)
         ? data.productsByUser.data
