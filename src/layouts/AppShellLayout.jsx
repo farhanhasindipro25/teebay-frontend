@@ -1,8 +1,13 @@
 import { AppShell, Avatar, Group, Menu, NavLink, Text } from "@mantine/core";
-import { IconLogout, IconPlus, IconShoppingCart } from "@tabler/icons-react";
+import {
+    IconBrandProducthunt,
+    IconLogout,
+    IconPlus,
+    IconShoppingCart,
+} from "@tabler/icons-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logout, useCurrentUser } from "../hooks/useCurrentUser";
-import { CREATE_PRODUCT, MY_PRODUCTS } from "../constants/appUrls";
+import { CREATE_PRODUCT, MY_PRODUCTS, PRODUCTS } from "../constants/appUrls";
 
 export default function AppShellLayout({ children }) {
     const navigate = useNavigate();
@@ -16,6 +21,11 @@ export default function AppShellLayout({ children }) {
             path: MY_PRODUCTS,
         },
         {
+            label: "All Products",
+            icon: <IconBrandProducthunt size={20} />,
+            path: PRODUCTS,
+        },
+        {
             label: "Add Products",
             icon: <IconPlus size={20} />,
             path: CREATE_PRODUCT,
@@ -24,7 +34,7 @@ export default function AppShellLayout({ children }) {
 
     const handleLogout = () => {
         logout();
-        navigate("/login");
+        navigate("/");
     };
 
     const getInitials = (name) => {

@@ -38,14 +38,14 @@ export default function Login() {
                 localStorage.setItem("userEmail", user.email);
 
                 notifications.show({
-                    title: "Success",
-                    message: data.login.message || "Login successful!",
+                    title: `Welcome Back ${user.name}`,
+                    message: "You have successfully logged in!",
                     color: "green",
                 });
             } else {
                 notifications.show({
                     title: "Login Failed",
-                    message: data.login.message || "Invalid credentials",
+                    message: "Invalid credentials",
                     color: "red",
                 });
             }

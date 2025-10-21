@@ -14,9 +14,11 @@ import { IconAlertCircle, IconCalendar } from "@tabler/icons-react";
 import { useParams } from "react-router-dom";
 import { GET_PRODUCT } from "../../services/queries/productQueries";
 import { GetDateInDayMonthYearFormat } from "../../utils/dateFormatters";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 export default function ProductDetails() {
     const { uid } = useParams();
+    const currentUser = useCurrentUser();
     const { loading, error, data } = useQuery(GET_PRODUCT, {
         variables: { uid },
     });
@@ -64,7 +66,7 @@ export default function ProductDetails() {
             </Container>
         );
     }
-
+    console.log(currentUser);
     return (
         <Container size="md" py="xl">
             <Stack gap="lg">
@@ -72,7 +74,11 @@ export default function ProductDetails() {
 
                 <Text size="sm" c="dimmed">
                     Categories:{" "}
-                    {product.categories?.join(", ") || "Uncategorized"}
+                    {product.categories?.length
+                        ? product.categories
+                              .map((c) => c.replace("_", " "))
+                              .join(", ")
+                        : "Uncategorized"}
                 </Text>
                 <Title order={3} c="dark">
                     Price: ${product.price}
@@ -94,6 +100,14 @@ export default function ProductDetails() {
                         {GetDateInDayMonthYearFormat(product.createdAt)}
                     </Text>
                 </Group>
+                {/* 
+                {currentUser.id === product.createdById && (
+                    <Alert
+                        icon={<IconAlertCircle size={16} />}
+                        title="You cannot buy or rent your own product"
+                        color="indigo"
+                    />
+                )} */}
 
                 <Flex gap="md" justify="flex-end">
                     <Button variant="outline" color="indigo" size="md">

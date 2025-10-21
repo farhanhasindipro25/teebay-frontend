@@ -17,7 +17,7 @@ const appRoutes = [
     {
         path: urls.PRODUCTS,
         Element: Products,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
         path: urls.PRODUCT_DETAILS,

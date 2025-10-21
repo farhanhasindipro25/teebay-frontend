@@ -20,11 +20,11 @@ export default function Navbar({ children }) {
                     </Text>
 
                     <Group>
-                        {location.pathname !== "/login" && (
+                        {location.pathname !== "/" && (
                             <Button
                                 variant="outline"
                                 color="indigo"
-                                onClick={() => navigate("/login")}
+                                onClick={() => navigate("/")}
                             >
                                 Login
                             </Button>

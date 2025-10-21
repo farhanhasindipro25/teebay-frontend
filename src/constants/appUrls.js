@@ -1,7 +1,7 @@
-export const PRODUCTS = "/";
+export const PRODUCTS = "/all-products";
 export const PRODUCT_DETAILS = "/products/:uid";
 
-export const LOGIN = "/login";
+export const LOGIN = "/";
 export const CREATE_ACCOUNT = "/create-account";
 
 export const MY_PRODUCTS = "/my-products";

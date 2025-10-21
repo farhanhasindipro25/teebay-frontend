@@ -7,7 +7,7 @@ export default function ProtectedRoute({ children, noShell = false }) {
     const userId = localStorage.getItem("userId");
 
     if (!currentUser && !userId) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/" replace />;
     }
 
     if (noShell) {
