@@ -10,14 +10,20 @@ import {
     Text,
     Title,
 } from "@mantine/core";
-import { IconAlertCircle, IconCalendar } from "@tabler/icons-react";
-import { useParams } from "react-router-dom";
+import {
+    IconAlertCircle,
+    IconCalendar,
+    IconChevronLeft,
+} from "@tabler/icons-react";
+import { useNavigate, useParams } from "react-router-dom";
 import { GET_PRODUCT } from "../../services/queries/productQueries";
 import { GetDateInDayMonthYearFormat } from "../../utils/dateFormatters";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { PRODUCTS } from "../../constants/appUrls";
 
 export default function ProductDetails() {
     const { uid } = useParams();
+    const navigate = useNavigate();
     const currentUser = useCurrentUser();
     const { loading, error, data } = useQuery(GET_PRODUCT, {
         variables: { uid },
@@ -66,9 +72,19 @@ export default function ProductDetails() {
             </Container>
         );
     }
-    console.log(currentUser);
+
     return (
         <Container size="md" py="xl">
+            <Button
+                variant="subtle"
+                leftSection={<IconChevronLeft size={14} />}
+                c="indigo"
+                size="xs"
+                mb={10}
+                onClick={() => navigate(PRODUCTS)}
+            >
+                Go Back
+            </Button>
             <Stack gap="lg">
                 <Title order={3}>{product.title}</Title>
 
@@ -100,20 +116,52 @@ export default function ProductDetails() {
                         {GetDateInDayMonthYearFormat(product.createdAt)}
                     </Text>
                 </Group>
-                {/* 
-                {currentUser.id === product.createdById && (
+
+                {currentUser.uid === product.createdByInfo.uid && (
                     <Alert
                         icon={<IconAlertCircle size={16} />}
                         title="You cannot buy or rent your own product"
                         color="indigo"
                     />
-                )} */}
+                )}
+
+                {product.isBought === true && (
+                    <Alert
+                        icon={<IconAlertCircle size={16} />}
+                        title="This product is already bought"
+                        color="orange"
+                    />
+                )}
+                {product.isRented === true && (
+                    <Alert
+                        icon={<IconAlertCircle size={16} />}
+                        title="This product is already rented"
+                        color="yellow"
+                    />
+                )}
 
                 <Flex gap="md" justify="flex-end">
-                    <Button variant="outline" color="indigo" size="md">
+                    <Button
+                        disabled={
+                            currentUser.uid === product.createdByInfo.uid ||
+                            product.isBought === true ||
+                            product.isRented === true
+                        }
+                        variant="outline"
+                        color="indigo"
+                        size="md"
+                    >
                         Rent
                     </Button>
-                    <Button size="md" color="indigo">
+                    <Button
+                        disabled={
+                            currentUser.uid === product.createdByInfo.uid ||
+                            product.isBought === true ||
+                            product.isRented === true
+                        }
+                        size="md"
+                        color="indigo"
+                    >
                         Buy
                     </Button>
                 </Flex>
