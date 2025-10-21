@@ -19,7 +19,7 @@ export default function Products() {
     return (
         <Container size="xl" py="xl">
             <Flex justify="space-between" align="center" mb="xl">
-                <Title order={3}>All Products</Title>
+                <Title order={4}>All Products</Title>
             </Flex>
 
             <Stack gap="md">

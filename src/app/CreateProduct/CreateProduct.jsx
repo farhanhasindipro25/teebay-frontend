@@ -105,7 +105,7 @@ export default function CreateProduct() {
 
     return (
         <Container size="sm" mt="xl">
-            <Title order={3} ta="center" mb="xl">
+            <Title order={4} ta="center" mb="xl">
                 Add New Product
             </Title>
 

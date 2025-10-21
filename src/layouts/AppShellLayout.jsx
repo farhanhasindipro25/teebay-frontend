@@ -4,10 +4,16 @@ import {
     IconLogout,
     IconPlus,
     IconShoppingCart,
+    IconTransactionDollar,
 } from "@tabler/icons-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logout, useCurrentUser } from "../hooks/useCurrentUser";
-import { CREATE_PRODUCT, MY_PRODUCTS, PRODUCTS } from "../constants/appUrls";
+import {
+    CREATE_PRODUCT,
+    MY_PRODUCTS,
+    MY_TRANSACTIONS,
+    PRODUCTS,
+} from "../constants/appUrls";
 
 export default function AppShellLayout({ children }) {
     const navigate = useNavigate();
@@ -29,6 +35,11 @@ export default function AppShellLayout({ children }) {
             label: "Add Products",
             icon: <IconPlus size={20} />,
             path: CREATE_PRODUCT,
+        },
+        {
+            label: "My Transactions",
+            icon: <IconTransactionDollar size={20} />,
+            path: MY_TRANSACTIONS,
         },
     ];
 

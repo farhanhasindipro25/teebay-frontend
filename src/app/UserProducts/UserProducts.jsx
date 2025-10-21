@@ -33,7 +33,7 @@ export default function UserProducts() {
     return (
         <Container size="xl" py="xl">
             <Flex justify="space-between" align="center" mb="xl">
-                <Title order={3}>My Products</Title>
+                <Title order={4}>My Products</Title>
                 <Button
                     onClick={() => navigate(CREATE_PRODUCT)}
                     color="indigo"
