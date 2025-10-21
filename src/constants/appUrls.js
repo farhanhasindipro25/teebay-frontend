@@ -1,4 +1,4 @@
-export const PRODUCTS = "/all-products";
+export const PRODUCTS = "/products";
 export const PRODUCT_DETAILS = "/products/:uid";
 
 export const LOGIN = "/";

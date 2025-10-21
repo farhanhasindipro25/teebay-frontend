@@ -50,18 +50,11 @@ export default function UserProductCard({ product, refetch }) {
         },
     });
 
-    const handleClick = () => {
-        navigate(`/products/${product.uid}`);
-    };
-
     const handleEdit = (e) => {
-        e.stopPropagation();
         navigate(`/my-products/edit/${product.uid}`);
     };
 
     const handleDelete = (e) => {
-        e.stopPropagation();
-
         if (!currentUser) return;
 
         modals.openConfirmModal({
@@ -88,41 +81,33 @@ export default function UserProductCard({ product, refetch }) {
     };
 
     return (
-        <Card
-            shadow="sm"
-            padding="lg"
-            withBorder
-            style={{ cursor: "pointer" }}
-            onClick={handleClick}
-        >
+        <Card shadow="sm" padding="lg" withBorder>
             <Flex justify="space-between" align="flex-start" mb="xs">
-                <Title order={2} size="h4" style={{ flex: 1 }}>
+                <Title order={2} size="h4">
                     {product.title}
                 </Title>
 
-                {currentUser && (
-                    <Group gap="xs" onClick={(e) => e.stopPropagation()}>
-                        <Tooltip label="Edit Product">
-                            <ActionIcon
-                                variant="subtle"
-                                color="indigo"
-                                onClick={handleEdit}
-                            >
-                                <IconEdit size={18} />
-                            </ActionIcon>
-                        </Tooltip>
-                        <Tooltip label="Delete Product">
-                            <ActionIcon
-                                variant="subtle"
-                                color="red"
-                                onClick={handleDelete}
-                                disabled={loading}
-                            >
-                                <IconTrash size={18} />
-                            </ActionIcon>
-                        </Tooltip>
-                    </Group>
-                )}
+                <Group gap="xs" onClick={(e) => e.stopPropagation()}>
+                    <Tooltip label="Edit Product">
+                        <ActionIcon
+                            variant="subtle"
+                            color="indigo"
+                            onClick={handleEdit}
+                        >
+                            <IconEdit size={18} />
+                        </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label="Delete Product">
+                        <ActionIcon
+                            variant="subtle"
+                            color="red"
+                            onClick={handleDelete}
+                            disabled={loading}
+                        >
+                            <IconTrash size={18} />
+                        </ActionIcon>
+                    </Tooltip>
+                </Group>
             </Flex>
 
             <Text size="sm" c="dimmed" mb="xs">

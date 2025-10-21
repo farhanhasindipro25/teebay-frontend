@@ -6,11 +6,11 @@ import {
     Loader,
     Stack,
     Text,
-    Title
+    Title,
 } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
-import ProductCard from "../../components/ProductCard";
 import { GET_PRODUCTS } from "../../services/queries/productQueries";
+import ProductCard from "./components/ProductCard";
 
 export default function Products() {
     const { loading, error, data } = useQuery(GET_PRODUCTS);

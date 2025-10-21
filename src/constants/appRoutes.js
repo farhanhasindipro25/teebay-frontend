@@ -22,7 +22,7 @@ const appRoutes = [
     {
         path: urls.PRODUCT_DETAILS,
         Element: ProductDetails,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
         path: urls.LOGIN,
