@@ -1,7 +1,8 @@
 import { AppShell, Avatar, Group, Menu, NavLink, Text } from "@mantine/core";
-import { IconLogout, IconShoppingCart } from "@tabler/icons-react";
+import { IconLogout, IconPlus, IconShoppingCart } from "@tabler/icons-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logout, useCurrentUser } from "../hooks/useCurrentUser";
+import { CREATE_PRODUCT, MY_PRODUCTS } from "../constants/appUrls";
 
 export default function AppShellLayout({ children }) {
     const navigate = useNavigate();
@@ -12,7 +13,12 @@ export default function AppShellLayout({ children }) {
         {
             label: "My Products",
             icon: <IconShoppingCart size={20} />,
-            path: "/my-products",
+            path: MY_PRODUCTS,
+        },
+        {
+            label: "Add Products",
+            icon: <IconPlus size={20} />,
+            path: CREATE_PRODUCT,
         },
     ];
 

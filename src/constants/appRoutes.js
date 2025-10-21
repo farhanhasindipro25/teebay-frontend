@@ -1,6 +1,5 @@
 import { lazy } from "react";
 import * as urls from "./appUrls";
-import UpdateProduct from "../app/UpdateProduct/UpdateProduct";
 
 const Login = lazy(() => import("../app/Auth/Login/Login"));
 const CreateAccount = lazy(() =>
@@ -11,6 +10,8 @@ const ProductDetails = lazy(() =>
     import("../app/ProductDetails/ProductDetails")
 );
 const UserProducts = lazy(() => import("../app/UserProducts/UserProducts"));
+const CreateProduct = lazy(() => import("../app/CreateProduct/CreateProduct"));
+const UpdateProduct = lazy(() => import("../app/UpdateProduct/UpdateProduct"));
 
 const appRoutes = [
     {
@@ -36,6 +37,11 @@ const appRoutes = [
     {
         path: urls.MY_PRODUCTS,
         Element: UserProducts,
+        isPrivate: true,
+    },
+    {
+        path: urls.CREATE_PRODUCT,
+        Element: CreateProduct,
         isPrivate: true,
     },
     {

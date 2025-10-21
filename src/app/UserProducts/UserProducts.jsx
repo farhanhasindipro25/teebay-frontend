@@ -13,9 +13,12 @@ import { IconAlertCircle, IconPlus } from "@tabler/icons-react";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { GET_PRODUCTS_BY_USER } from "../../services/queries/productQueries";
 import ProductCard from "../../components/ProductCard";
+import { useNavigate } from "react-router-dom";
+import { CREATE_PRODUCT } from "../../constants/appUrls";
 
 export default function UserProducts() {
     const currentUser = useCurrentUser();
+    const navigate = useNavigate();
     const userUid = currentUser?.uid;
 
     const { loading, error, data, refetch } = useQuery(GET_PRODUCTS_BY_USER, {
@@ -73,7 +76,11 @@ export default function UserProducts() {
         <Container size="xl" py="xl">
             <Flex justify="space-between" align="center" mb="xl">
                 <Title order={3}>My Products</Title>
-                <Button color="indigo" leftSection={<IconPlus size={20} />}>
+                <Button
+                    onClick={() => navigate(CREATE_PRODUCT)}
+                    color="indigo"
+                    leftSection={<IconPlus size={20} />}
+                >
                     Add Product
                 </Button>
             </Flex>
