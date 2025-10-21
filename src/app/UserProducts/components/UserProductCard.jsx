@@ -6,6 +6,8 @@ import {
     ActionIcon,
     Flex,
     Tooltip,
+    Badge,
+    Space,
 } from "@mantine/core";
 import { IconCalendar, IconEdit, IconTrash } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
@@ -63,8 +65,7 @@ export default function UserProductCard({ product, refetch }) {
             children: (
                 <Text size="sm">
                     Are you sure you want to delete{" "}
-                    <strong>{product.title}</strong>? This action cannot be
-                    undone.
+                    <strong>{product.title}</strong>?
                 </Text>
             ),
             labels: { confirm: "Delete", cancel: "Cancel" },
@@ -109,7 +110,15 @@ export default function UserProductCard({ product, refetch }) {
                     </Tooltip>
                 </Group>
             </Flex>
-
+            <Space py={4} />
+            <Flex gap={10} align="center">
+                {product.isBought && <Badge color="violet">SOLD</Badge>}
+                {product.isRented && <Badge color="blue">ON RENT</Badge>}
+                {!product.isRented && !product.isBought && (
+                    <Badge color="green">IN STOCK</Badge>
+                )}
+            </Flex>
+            <Space py={4} />
             <Text size="sm" c="dimmed" mb="xs">
                 Categories:{" "}
                 {product.categories?.length

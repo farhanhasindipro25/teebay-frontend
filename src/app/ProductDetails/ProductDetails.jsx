@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client/react";
 import {
     Alert,
+    Badge,
     Button,
     Container,
     Flex,
@@ -14,25 +15,25 @@ import { notifications } from "@mantine/notifications";
 import {
     IconAlertCircle,
     IconCalendar,
-    IconCheck,
     IconChevronLeft,
-    IconX,
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ErrorBox from "../../components/ErrorBox";
 import GlobalInitialPageLoader from "../../components/GlobalInitialPageLoader";
-import { PRODUCTS } from "../../constants/appUrls";
+import { MY_TRANSACTIONS, PRODUCTS } from "../../constants/appUrls";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { GetDateInDayMonthYearFormat } from "../../utils/dateFormatters";
-import { GET_PRODUCT } from "../../services/queries/productQueries";
 import { BUY_PRODUCT } from "../../services/mutations/transactionMutations";
+import { GET_PRODUCT } from "../../services/queries/productQueries";
+import { GetDateInDayMonthYearFormat } from "../../utils/dateFormatters";
+import ProductRentModal from "./components/ProductRentModal";
 
 export default function ProductDetails() {
     const { uid } = useParams();
     const navigate = useNavigate();
     const currentUser = useCurrentUser();
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [rentModalOpen, setRentModalOpen] = useState(false);
 
     const { loading, error, data } = useQuery(GET_PRODUCT, {
         variables: { uid },
@@ -48,9 +49,8 @@ export default function ProductDetails() {
                         data.buyProduct.message ||
                         "Product purchased successfully!",
                     color: "green",
-                    icon: <IconCheck size={16} />,
                 });
-                navigate(PRODUCTS);
+                navigate(MY_TRANSACTIONS);
             }
         },
         onError: (error) => {
@@ -74,6 +74,10 @@ export default function ProductDetails() {
                 },
             },
         });
+    };
+
+    const handleRentSuccess = () => {
+        navigate(MY_TRANSACTIONS);
     };
 
     if (loading) return <GlobalInitialPageLoader />;
@@ -116,7 +120,15 @@ export default function ProductDetails() {
                 </Button>
                 <Stack gap="lg">
                     <Title order={3}>{product.title}</Title>
-
+                    <Flex gap={10} align="center">
+                        {product.isBought && <Badge color="violet">SOLD</Badge>}
+                        {product.isRented && (
+                            <Badge color="blue">ON RENT</Badge>
+                        )}
+                        {!product.isRented && !product.isBought && (
+                            <Badge color="green">IN STOCK</Badge>
+                        )}
+                    </Flex>
                     <Text size="sm" c="dimmed">
                         Categories:{" "}
                         {product.categories?.length
@@ -128,6 +140,13 @@ export default function ProductDetails() {
                     <Title order={3} c="dark">
                         Price: ${product.price}
                     </Title>
+
+                    {product.rentalPrice && (
+                        <Text size="lg" fw={500}>
+                            Rental: ${product.rentalPrice}
+                            {product.rentalType && ` / ${product.rentalType}`}
+                        </Text>
+                    )}
 
                     <div>
                         <Text size="lg" fw={500} mb="sm">
@@ -156,27 +175,13 @@ export default function ProductDetails() {
                         />
                     )}
 
-                    {product.isBought === true && (
-                        <Alert
-                            icon={<IconAlertCircle size={16} />}
-                            title="This product is already bought"
-                            color="orange"
-                        />
-                    )}
-                    {product.isRented === true && (
-                        <Alert
-                            icon={<IconAlertCircle size={16} />}
-                            title="This product is already rented"
-                            color="yellow"
-                        />
-                    )}
-
                     <Flex gap="md" justify="flex-end">
                         <Button
                             disabled={isDisabled}
                             variant="outline"
                             color="indigo"
                             size="md"
+                            onClick={() => setRentModalOpen(true)}
                         >
                             Rent
                         </Button>
@@ -223,6 +228,14 @@ export default function ProductDetails() {
                     </Flex>
                 </Stack>
             </Modal>
+
+            <ProductRentModal
+                opened={rentModalOpen}
+                onClose={() => setRentModalOpen(false)}
+                product={product}
+                currentUserUid={currentUser.uid}
+                onSuccess={handleRentSuccess}
+            />
         </>
     );
 }

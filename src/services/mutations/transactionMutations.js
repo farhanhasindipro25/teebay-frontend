@@ -47,3 +47,38 @@ export const BUY_PRODUCT = gql`
         }
     }
 `;
+
+export const RENT_PRODUCT = gql`
+    mutation RentProduct($rentProductInput: RentProductInput!) {
+        rentProduct(rentProductInput: $rentProductInput) {
+            success
+            message
+            transaction {
+                id
+                uid
+                type
+                productInfo {
+                    uid
+                    title
+                    price
+                    rentalPrice
+                    rentalType
+                    rentStartsAt
+                    rentEndsAt
+                    isRented
+                }
+                buyerInfo {
+                    uid
+                    name
+                    email
+                }
+                sellerInfo {
+                    uid
+                    name
+                    email
+                }
+                createdAt
+            }
+        }
+    }
+`;

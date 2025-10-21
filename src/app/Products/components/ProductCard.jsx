@@ -1,4 +1,4 @@
-import { Card, Flex, Group, Text, Title } from "@mantine/core";
+import { Badge, Card, Flex, Group, Space, Text, Title } from "@mantine/core";
 import { IconCalendar } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { GetDateInDayMonthYearFormat } from "../../../utils/dateFormatters";
@@ -20,12 +20,18 @@ export default function ProductCard({ product }) {
             }}
             withBorder
         >
-            <Flex justify="space-between" align="flex-start" mb="xs">
-                <Title order={2} size="h4">
-                    {product.title}
-                </Title>
+            <Title order={2} size="h4">
+                {product.title}
+            </Title>
+            <Space py={4} />
+            <Flex gap={10} align="center">
+                {product.isBought && <Badge color="violet">SOLD</Badge>}
+                {product.isRented && <Badge color="blue">ON RENT</Badge>}
+                {!product.isRented && !product.isBought && (
+                    <Badge color="green">IN STOCK</Badge>
+                )}
             </Flex>
-
+            <Space py={4} />
             <Text size="sm" c="dimmed" mb="xs">
                 Categories:{" "}
                 {product.categories?.length
