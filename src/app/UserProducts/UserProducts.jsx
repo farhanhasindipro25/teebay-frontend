@@ -10,11 +10,11 @@ import {
     Title,
 } from "@mantine/core";
 import { IconAlertCircle, IconPlus } from "@tabler/icons-react";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
-import { GET_PRODUCTS_BY_USER } from "../../services/queries/productQueries";
-import ProductCard from "../../components/ProductCard";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PRODUCT } from "../../constants/appUrls";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { GET_PRODUCTS_BY_USER } from "../../services/queries/productQueries";
+import UserProductCard from "./components/UserProductCard";
 
 export default function UserProducts() {
     const currentUser = useCurrentUser();
@@ -87,7 +87,7 @@ export default function UserProducts() {
 
             <Stack gap="md">
                 {products.map((product) => (
-                    <ProductCard
+                    <UserProductCard
                         refetch={refetch}
                         key={product.uid}
                         product={product}

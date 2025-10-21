@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client/react";
 import {
     Button,
     Group,
@@ -9,17 +10,14 @@ import {
     Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { yupResolver } from "mantine-form-yup-resolver";
-import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client/react";
 import { notifications } from "@mantine/notifications";
+import { yupResolver } from "mantine-form-yup-resolver";
+import { Link } from "react-router-dom";
+import { currentUserVar } from "../../../providers/ApolloProvider";
 import { LOGIN } from "../../../services/mutations/authMutations";
 import { loginSchema } from "../../../validators/authValidators";
-import { currentUserVar } from "../../../providers/ApolloProvider";
 
 export default function Login() {
-    const navigate = useNavigate();
-
     const [login, { loading }] = useMutation(LOGIN, {
         onCompleted: (data) => {
             if (data.login.success) {
