@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import * as urls from "./appUrls";
+import UserTransactions from "../app/UserTransactions/UserTransactions";
 
 const Login = lazy(() => import("../app/Auth/Login/Login"));
 const CreateAccount = lazy(() =>
@@ -47,6 +48,11 @@ const appRoutes = [
     {
         path: urls.EDIT_PRODUCT,
         Element: UpdateProduct,
+        isPrivate: true,
+    },
+    {
+        path: urls.MY_TRANSACTIONS,
+        Element: UserTransactions,
         isPrivate: true,
     },
 ];
